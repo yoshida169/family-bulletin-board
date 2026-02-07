@@ -132,6 +132,6 @@ To connect to emulators, the app needs to detect and use localhost endpoints (co
 
 ## Documentation Reference
 
-- [family.md](family.md) - Requirements definition (要件定義書)
-- [design.md](design.md) - Design document (設計書)
-- [implementation-plan.md](implementation-plan.md) - Implementation plan with task breakdown
+- [requirements.md](doc/requirements.md) - Requirements definition (要件定義書)
+- [design.md](doc/design.md) - Design document (設計書)
+- [implementation-plan.md](doc/implementation-plan.md) - Implementation plan with task breakdown
