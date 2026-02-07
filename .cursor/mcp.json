@@ -1,40 +1,52 @@
-{
-  "mcpServers": {
-    "serena": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena",
-        "start-mcp-server",
-        "--context",
-        "ide"
-      ]
-    },
-    "firebase": {
-      "command": "npx",
-      "args": ["-y", "firebase-tools@latest", "mcp"]
-    },
-    "postman": {
-      "command": "npx",
-      "args": ["-y", "@postman/postman-mcp-server@latest", "--full"],
-      "env": {
-        "POSTMAN_API_KEY": "${env:POSTMAN_API_KEY}"
-      }
-    },
-    "github": {
-      "url": "https://api.githubcopilot.com/mcp/",
-      "headers": {
-        "Authorization": "Bearer ${env:GITHUB_PAT}"
-      }
-    },
-    "BrowserStack": {
-      "command": "npx -y @browserstack/mcp-server@latest",
-      "env": {
-        "BROWSERSTACK_USERNAME": "${env:BROWSERSTACK_USERNAME}",
-        "BROWSERSTACK_ACCESS_KEY": "${env:BROWSERSTACK_ACCESS_KEY}"
-      },
-      "args": []
-    }
-  }
-}
+// {
+//   "mcpServers": {
+//     "serena": {
+//       "command": "uvx",
+//       "args": [
+//         "--from",
+//         "git+https://github.com/oraios/serena",
+//         "serena",
+//         "start-mcp-server",
+//         "--context",
+//         "ide"
+//       ]
+//     },
+//     "firebase": {
+//       "command": "npx",
+//       "args": [
+//         "-y",
+//         "firebase-tools@latest",
+//         "mcp"
+//       ]
+//     },
+//     "postman": {
+//       "command": "npx",
+//       "args": [
+//         "-y",
+//         "@postman/postman-mcp-server@latest",
+//         "--full"
+//       ],
+//       "env": {
+//         "POSTMAN_API_KEY": "${env:POSTMAN_API_KEY}"
+//       }
+//     },
+//     "github": {
+//       "url": "https://api.githubcopilot.com/mcp/",
+//       "headers": {
+//         "Authorization": "Bearer ${env:GITHUB_PAT}"
+//       }
+//     },
+//     "BrowserStack": {
+//       "command": "npx -y @browserstack/mcp-server@latest",
+//       "env": {
+//         "BROWSERSTACK_USERNAME": "${env:BROWSERSTACK_USERNAME}",
+//         "BROWSERSTACK_ACCESS_KEY": "${env:BROWSERSTACK_ACCESS_KEY}"
+//       },
+//       "args": []
+//     },
+//     "aws-knowledge-mcp": {
+//       "url": "https://knowledge-mcp.global.api.aws",
+//       "headers": {}
+//     }
+//   }
+// }
