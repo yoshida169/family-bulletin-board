@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { User, LoginCredentials, SignUpCredentials } from '@types/auth';
-import { authService } from '@services/firebase/auth';
+import type { User, LoginCredentials, SignUpCredentials } from '@/src/types/auth';
+import { authService } from '@/src/services/firebase/auth';
 
 interface AuthState {
   user: User | null;
