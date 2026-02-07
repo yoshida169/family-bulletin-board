@@ -1,13 +1,13 @@
 import firestore from '@react-native-firebase/firestore';
 import { Collections } from './config';
-import {
+import type {
   Family,
   FamilySettings,
   FamilyMember,
   UserFamilyRelation,
   Relation,
   MemberRole,
-} from '@types/family';
+} from '@/src/types/family';
 
 const defaultFamilySettings: FamilySettings = {
   allowChildrenToPost: true,

@@ -1,7 +1,7 @@
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { Collections } from './config';
-import { User, UserSettings, LoginCredentials, SignUpCredentials } from '@types/auth';
+import type { User, UserSettings, LoginCredentials, SignUpCredentials } from '@/src/types/auth';
 
 const defaultSettings: UserSettings = {
   pushNotificationsEnabled: true,
@@ -50,9 +50,9 @@ export const authService = {
 
     const now = firestore.FieldValue.serverTimestamp();
     const userData: Omit<User, 'createdAt' | 'updatedAt' | 'lastLoginAt'> & {
-      createdAt: FirebaseAuthTypes.FieldValue;
-      updatedAt: FirebaseAuthTypes.FieldValue;
-      lastLoginAt: FirebaseAuthTypes.FieldValue;
+      createdAt: ReturnType<typeof firestore.FieldValue.serverTimestamp>;
+      updatedAt: ReturnType<typeof firestore.FieldValue.serverTimestamp>;
+      lastLoginAt: ReturnType<typeof firestore.FieldValue.serverTimestamp>;
     } = {
       uid: user.uid,
       email: email,

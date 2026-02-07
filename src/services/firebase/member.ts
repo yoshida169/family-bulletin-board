@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import { Collections } from './config';
-import { FamilyMember, Relation, MemberRole } from '@types/family';
+import type { FamilyMember, Relation, MemberRole } from '@/src/types/family';
 
 interface AddMemberInput {
   familyId: string;
@@ -27,7 +27,7 @@ export const memberService = {
 
     // Check if member already exists
     const existingMember = await memberRef.get();
-    if (existingMember.exists) {
+    if (existingMember.exists()) {
       throw new Error('このユーザーは既にファミリーのメンバーです');
     }
 
@@ -255,7 +255,7 @@ export const memberService = {
       .doc(userId)
       .get();
 
-    if (!doc.exists) return null;
+    if (!doc.exists()) return null;
 
     const data = doc.data();
     return {
@@ -276,7 +276,7 @@ export const memberService = {
       .doc(userId)
       .get();
 
-    return doc.exists;
+    return doc.exists();
   },
 
   /**
