@@ -18,9 +18,11 @@ npm run android
 npm run web
 
 # Testing
-npm test                  # Run all tests
-npm run test:watch        # Run tests in watch mode
-npm run test:coverage     # Run tests with coverage report
+npm test                           # Run all tests
+npm run test:watch                 # Run tests in watch mode
+npm run test:coverage              # Run tests with coverage report
+jest path/to/test-file.test.ts     # Run specific test file
+jest -t "test name pattern"        # Run tests matching pattern
 ```
 
 ## Tech Stack
@@ -56,6 +58,7 @@ src/
 ### Path Aliases
 
 Configure in `tsconfig.json`:
+- `@/*` → `./*` (root)
 - `@components/*` → `src/components/*`
 - `@hooks/*` → `src/hooks/*`
 - `@services/*` → `src/services/*`
@@ -101,6 +104,12 @@ This project follows Test-Driven Development. Write tests first:
 3. Integration tests with Firebase Emulator Suite
 4. E2E tests with Detox
 
+### Firebase Configuration
+
+Firebase configuration is managed through React Native Firebase. Required environment variables or config files:
+- Firebase project setup in `google-services.json` (Android) or `GoogleService-Info.plist` (iOS)
+- For development, Firebase Emulator can be used (if configured)
+
 ### Firebase Emulator
 
 For local development with Firebase:
@@ -114,6 +123,8 @@ Emulator ports:
 - Firestore: 8080
 - Storage: 9199
 - UI: 4000
+
+To connect to emulators, the app needs to detect and use localhost endpoints (configured in Firebase service initialization).
 
 ## MCP (Model Context Protocol)
 
