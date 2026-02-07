@@ -2,69 +2,81 @@
 
 ## ✅ 完了済み: Phase 1 - ファミリー機能（基盤）
 
-全タスク完了・テスト通過・GitHubにpush済み
+全タスク完了・テスト通過・GitHub に push 済み
 
 ---
 
 ## 📋 未実装フェーズ概要
 
-### Phase 2: 掲示板機能（投稿CRUD）
-**並行実行可能度**: ⭐⭐⭐ (Phase 1完了後に単独実行可)  
-**推定作業時間**: 4-6時間  
-**並行エージェント数**: 1-2個
+### Phase 2: 掲示板機能（投稿 CRUD）
+
+**並行実行可能度**: ⭐⭐⭐ (Phase 1 完了後に単独実行可)  
+**推定作業時間**: 4-6 時間  
+**並行エージェント数**: 1-2 個
 
 ### Phase 3: コメント・既読機能
-**並行実行可能度**: ⭐⭐ (Phase 2完了後)  
-**推定作業時間**: 3-4時間  
-**並行エージェント数**: 1-2個
+
+**並行実行可能度**: ⭐⭐ (Phase 2 完了後)  
+**推定作業時間**: 3-4 時間  
+**並行エージェント数**: 1-2 個
 
 ### Phase 4: 検索・フィルタリング機能
-**並行実行可能度**: ⭐⭐⭐ (Phase 2完了後に並行可)  
-**推定作業時間**: 2-3時間  
-**並行エージェント数**: 1個
+
+**並行実行可能度**: ⭐⭐⭐ (Phase 2 完了後に並行可)  
+**推定作業時間**: 2-3 時間  
+**並行エージェント数**: 1 個
 
 ### Phase 5: 通知機能
-**並行実行可能度**: ⭐⭐⭐ (Phase 2完了後に並行可)  
-**推定作業時間**: 3-4時間  
-**並行エージェント数**: 1個
+
+**並行実行可能度**: ⭐⭐⭐ (Phase 2 完了後に並行可)  
+**推定作業時間**: 3-4 時間  
+**並行エージェント数**: 1 個
 
 ### Phase 6: ソーシャルログイン
-**並行実行可能度**: ⭐⭐⭐⭐⭐ (Phase 1完了後に独立実行可)  
-**推定作業時間**: 2-3時間  
-**並行エージェント数**: 1個
+
+**並行実行可能度**: ⭐⭐⭐⭐⭐ (Phase 1 完了後に独立実行可)  
+**推定作業時間**: 2-3 時間  
+**並行エージェント数**: 1 個
 
 ### Phase 7: 設定・プロフィール機能
-**並行実行可能度**: ⭐⭐⭐⭐ (Phase 1完了後に並行可)  
-**推定作業時間**: 3-4時間  
-**並行エージェント数**: 1個
+
+**並行実行可能度**: ⭐⭐⭐⭐ (Phase 1 完了後に並行可)  
+**推定作業時間**: 3-4 時間  
+**並行エージェント数**: 1 個
 
 ### Phase 8: チュートリアル機能
+
 **並行実行可能度**: ⭐ (全機能完了後)  
-**推定作業時間**: 2-3時間  
-**並行エージェント数**: 1個
+**推定作業時間**: 2-3 時間  
+**並行エージェント数**: 1 個
 
 ### Phase 9: 最適化・仕上げ
+
 **並行実行可能度**: ⭐ (全機能完了後)  
-**推定作業時間**: 4-6時間  
-**並行エージェント数**: 2-3個（レビュー、パフォーマンス、E2E並行可）
+**推定作業時間**: 4-6 時間  
+**並行エージェント数**: 2-3 個（レビュー、パフォーマンス、E2E 並行可）
 
 ---
 
-## 🚀 Phase 2: 掲示板機能（投稿CRUD）
+## 🚀 Phase 2: 掲示板機能（投稿 CRUD）
 
 ### 概要
+
 ファミリー内での投稿作成・表示・編集・削除機能
 
 ### 前提条件
-- ✅ Phase 1完了（ファミリー機能）
+
+- ✅ Phase 1 完了（ファミリー機能）
 
 ### 実装ファイル
 
 #### 1. サービス層（TDD）
+
 - [x] `src/services/firebase/post.ts` - 既に作成済み
 - [ ] `src/services/firebase/storage.ts` - 画像アップロード
 
 **タスク**:
+
 ```bash
 # Agent 1: Storage Service (TDD)
 1. __tests__/services/storageService.test.ts 作成
@@ -75,11 +87,13 @@
 ```
 
 #### 2. 状態管理・フック
+
 - [ ] `src/hooks/usePosts.ts`
 - [ ] `src/hooks/usePost.ts`
 - [ ] `src/hooks/useImagePicker.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Post Hooks
 1. src/hooks/usePosts.ts 実装
@@ -94,7 +108,8 @@
    - 画像選択・プレビュー
 ```
 
-#### 3. UIコンポーネント（TDD）
+#### 3. UI コンポーネント（TDD）
+
 - [ ] `src/components/post/PostCard.tsx`
 - [ ] `src/components/post/PostList.tsx`
 - [ ] `src/components/post/PostForm.tsx`
@@ -102,6 +117,7 @@
 - [ ] `src/components/post/PinnedBadge.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 2: Post Components (並行可)
 1. __tests__/components/post/*.test.tsx 作成（5ファイル）
@@ -114,11 +130,13 @@
 ```
 
 #### 4. 画面
+
 - [ ] `app/(main)/post/[id]/index.tsx` - 投稿詳細
 - [ ] `app/(main)/post/[id]/edit.tsx` - 投稿編集
 - [x] `app/(main)/post/create.tsx` - 既に作成済み（更新必要）
 
 **タスク**:
+
 ```bash
 # Agent 1 or 2: Post Screens
 1. app/(main)/post/[id]/index.tsx 作成
@@ -135,9 +153,11 @@
 ```
 
 #### 5. ホームタブ更新
+
 - [ ] `app/(main)/(tabs)/index.tsx` 更新
 
 **タスク**:
+
 ```bash
 # Agent 1: Home Tab Update
 1. app/(main)/(tabs)/index.tsx 更新
@@ -148,12 +168,14 @@
 ```
 
 ### テスト実行
+
 ```bash
 npm test -- __tests__/services/storageService.test.ts
 npm test -- __tests__/components/post/
 ```
 
 ### コミット戦略
+
 1. Storage service (TDD)
 2. Post hooks
 3. Post components (TDD)
@@ -165,19 +187,23 @@ npm test -- __tests__/components/post/
 ## 🚀 Phase 3: コメント・既読機能
 
 ### 概要
+
 投稿へのコメント/返信機能と既読管理
 
 ### 前提条件
-- ✅ Phase 1完了
-- ✅ Phase 2完了
+
+- ✅ Phase 1 完了
+- ✅ Phase 2 完了
 
 ### 実装ファイル
 
 #### 1. サービス層（TDD）
+
 - [ ] `src/services/firebase/comment.ts`
 - [ ] `src/services/firebase/readRecord.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Comment & Read Services (TDD)
 1. __tests__/services/commentService.test.ts 作成
@@ -194,23 +220,27 @@ npm test -- __tests__/components/post/
 ```
 
 #### 2. フック
+
 - [ ] `src/hooks/useComments.ts`
 - [ ] `src/hooks/useReadStatus.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Comment Hooks
 1. src/hooks/useComments.ts 実装
 2. src/hooks/useReadStatus.ts 実装
 ```
 
-#### 3. UIコンポーネント（TDD）
+#### 3. UI コンポーネント（TDD）
+
 - [ ] `src/components/post/CommentCard.tsx`
 - [ ] `src/components/post/CommentList.tsx`
 - [ ] `src/components/post/CommentInput.tsx`
 - [ ] `src/components/post/ReadStatus.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 2: Comment Components (並行可)
 1. __tests__/components/post/Comment*.test.tsx 作成（4ファイル）
@@ -218,9 +248,11 @@ npm test -- __tests__/components/post/
 ```
 
 #### 4. 画面更新
+
 - [ ] `app/(main)/post/[id]/index.tsx` にコメント機能追加
 
 **タスク**:
+
 ```bash
 # Agent 1: Post Detail Update
 1. app/(main)/post/[id]/index.tsx 更新
@@ -230,6 +262,7 @@ npm test -- __tests__/components/post/
 ```
 
 ### コミット戦略
+
 1. Comment & read services (TDD)
 2. Comment hooks
 3. Comment components (TDD)
@@ -240,18 +273,22 @@ npm test -- __tests__/components/post/
 ## 🚀 Phase 4: 検索・フィルタリング機能
 
 ### 概要
+
 投稿の検索とフィルタリング
 
 ### 前提条件
-- ✅ Phase 1完了
-- ✅ Phase 2完了
+
+- ✅ Phase 1 完了
+- ✅ Phase 2 完了
 
 ### 実装ファイル
 
 #### 1. フック
+
 - [ ] `src/hooks/useSearch.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Search Hook
 1. src/hooks/useSearch.ts 実装
@@ -260,11 +297,13 @@ npm test -- __tests__/components/post/
    - フィルタリング（作成者、日付、ピン留め）
 ```
 
-#### 2. UIコンポーネント（TDD）
+#### 2. UI コンポーネント（TDD）
+
 - [ ] `src/components/common/SearchBar.tsx`
 - [ ] `src/components/common/FilterChips.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 1: Search Components (TDD)
 1. __tests__/components/common/SearchBar.test.tsx 作成
@@ -274,9 +313,11 @@ npm test -- __tests__/components/post/
 ```
 
 #### 3. 画面
+
 - [ ] `app/(main)/search.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 1: Search Screen
 1. app/(main)/search.tsx 作成
@@ -286,6 +327,7 @@ npm test -- __tests__/components/post/
 ```
 
 ### コミット戦略
+
 1. Search hook with debounce
 2. Search components (TDD)
 3. Search screen
@@ -295,19 +337,23 @@ npm test -- __tests__/components/post/
 ## 🚀 Phase 5: 通知機能
 
 ### 概要
+
 プッシュ通知とアプリ内通知
 
 ### 前提条件
-- ✅ Phase 1完了
-- ✅ Phase 2完了
+
+- ✅ Phase 1 完了
+- ✅ Phase 2 完了
 
 ### 実装ファイル
 
 #### 1. サービス層（TDD）
+
 - [ ] `src/services/firebase/notification.ts`
 - [ ] `src/services/firebase/fcm.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Notification Services (TDD)
 1. __tests__/services/notificationService.test.ts 作成
@@ -323,11 +369,13 @@ npm test -- __tests__/components/post/
 ```
 
 #### 2. 状態管理・フック
+
 - [ ] `src/store/notificationStore.ts`
 - [ ] `src/hooks/useNotifications.ts`
 - [ ] `src/hooks/usePushNotification.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Notification Store & Hooks
 1. __tests__/store/notificationStore.test.ts 作成
@@ -336,11 +384,13 @@ npm test -- __tests__/components/post/
 4. src/hooks/usePushNotification.ts 実装
 ```
 
-#### 3. UIコンポーネント（TDD）
+#### 3. UI コンポーネント（TDD）
+
 - [ ] `src/components/notification/NotificationCard.tsx`
 - [ ] `src/components/notification/NotificationList.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 2: Notification Components (並行可)
 1. __tests__/components/notification/*.test.tsx 作成
@@ -348,9 +398,11 @@ npm test -- __tests__/components/post/
 ```
 
 #### 4. 通知タブ更新
+
 - [ ] `app/(main)/(tabs)/notifications.tsx` 更新
 
 **タスク**:
+
 ```bash
 # Agent 1: Notifications Tab
 1. app/(main)/(tabs)/notifications.tsx 更新
@@ -360,11 +412,13 @@ npm test -- __tests__/components/post/
 ```
 
 ### 依存パッケージ
+
 ```bash
 npm install expo-notifications
 ```
 
 ### コミット戦略
+
 1. Notification & FCM services (TDD)
 2. Notification store & hooks
 3. Notification components (TDD)
@@ -375,17 +429,21 @@ npm install expo-notifications
 ## 🚀 Phase 6: ソーシャルログイン
 
 ### 概要
-Google、Instagram、Xでのログイン
+
+Google、Instagram、X でのログイン
 
 ### 前提条件
-- ✅ Phase 1完了
+
+- ✅ Phase 1 完了
 
 ### 実装ファイル
 
 #### 1. サービス層
+
 - [ ] `src/services/firebase/socialAuth.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Social Auth Service
 1. src/services/firebase/socialAuth.ts 実装
@@ -395,13 +453,15 @@ Google、Instagram、Xでのログイン
    - linkAccount
 ```
 
-#### 2. UIコンポーネント
+#### 2. UI コンポーネント
+
 - [ ] `src/components/auth/SocialLoginButtons.tsx`
 - [ ] `src/components/auth/GoogleLoginButton.tsx`
 - [ ] `src/components/auth/InstagramLoginButton.tsx`
 - [ ] `src/components/auth/XLoginButton.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 1: Social Login Buttons
 1. src/components/auth/SocialLoginButtons.tsx 作成
@@ -411,10 +471,12 @@ Google、Instagram、Xでのログイン
 ```
 
 #### 3. 認証画面更新
+
 - [ ] `app/(auth)/login.tsx` 更新
 - [ ] `app/(auth)/signup.tsx` 更新
 
 **タスク**:
+
 ```bash
 # Agent 1: Auth Screens Update
 1. app/(auth)/login.tsx にSocialLoginButtons追加
@@ -422,16 +484,19 @@ Google、Instagram、Xでのログイン
 ```
 
 ### 依存パッケージ
+
 ```bash
 npm install expo-auth-session expo-crypto
 ```
 
 ### 設定
+
 - Firebase Console: ソーシャルプロバイダー有効化
-- Google Cloud: OAuth 2.0クライアントID設定
-- Instagram/X: Developer Apps設定
+- Google Cloud: OAuth 2.0 クライアント ID 設定
+- Instagram/X: Developer Apps 設定
 
 ### コミット戦略
+
 1. Social auth service
 2. Social login components
 3. Auth screens update
@@ -441,17 +506,21 @@ npm install expo-auth-session expo-crypto
 ## 🚀 Phase 7: 設定・プロフィール機能
 
 ### 概要
+
 ユーザー設定とプロフィール編集
 
 ### 前提条件
-- ✅ Phase 1完了
+
+- ✅ Phase 1 完了
 
 ### 実装ファイル
 
 #### 1. フック
+
 - [ ] `src/hooks/useUserSettings.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Settings Hook
 1. src/hooks/useUserSettings.ts 実装
@@ -461,12 +530,14 @@ npm install expo-auth-session expo-crypto
    - 通知設定
 ```
 
-#### 2. UIコンポーネント
+#### 2. UI コンポーネント
+
 - [ ] `src/components/settings/SettingsSection.tsx`
 - [ ] `src/components/settings/NotificationSettings.tsx`
 - [ ] `src/components/settings/ProfileEdit.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 1: Settings Components
 1. src/components/settings/SettingsSection.tsx 作成
@@ -475,11 +546,13 @@ npm install expo-auth-session expo-crypto
 ```
 
 #### 3. 画面
+
 - [ ] `app/(main)/settings/profile.tsx`
 - [ ] `app/(main)/settings/notifications.tsx`
 - [ ] `app/(main)/settings/account.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 1: Settings Screens
 1. app/(main)/settings/profile.tsx 作成
@@ -488,9 +561,11 @@ npm install expo-auth-session expo-crypto
 ```
 
 #### 4. 設定タブ更新
+
 - [ ] `app/(main)/(tabs)/settings.tsx` 更新
 
 **タスク**:
+
 ```bash
 # Agent 1: Settings Tab Update
 1. app/(main)/(tabs)/settings.tsx 更新
@@ -499,6 +574,7 @@ npm install expo-auth-session expo-crypto
 ```
 
 ### コミット戦略
+
 1. Settings hook
 2. Settings components
 3. Settings screens
@@ -509,17 +585,21 @@ npm install expo-auth-session expo-crypto
 ## 🚀 Phase 8: チュートリアル機能
 
 ### 概要
+
 初回利用時のチュートリアル
 
 ### 前提条件
+
 - ✅ 全機能完了
 
 ### 実装ファイル
 
 #### 1. サービス
+
 - [ ] `src/services/tutorial.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Tutorial Service
 1. src/services/tutorial.ts 実装
@@ -528,19 +608,23 @@ npm install expo-auth-session expo-crypto
 ```
 
 #### 2. フック
+
 - [ ] `src/hooks/useTutorial.ts`
 
 **タスク**:
+
 ```bash
 # Agent 1: Tutorial Hook
 1. src/hooks/useTutorial.ts 実装
 ```
 
-#### 3. UIコンポーネント
+#### 3. UI コンポーネント
+
 - [ ] `src/components/tutorial/TutorialOverlay.tsx`
 - [ ] `src/components/tutorial/TutorialStep.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 1: Tutorial Components
 1. src/components/tutorial/TutorialOverlay.tsx 作成
@@ -548,18 +632,22 @@ npm install expo-auth-session expo-crypto
 ```
 
 #### 4. 画面
+
 - [ ] `app/(main)/tutorial.tsx`
 
 **タスク**:
+
 ```bash
 # Agent 1: Tutorial Screen
 1. app/(main)/tutorial.tsx 作成
 ```
 
 #### 5. アプリ起動時の統合
+
 - [ ] `app/_layout.tsx` 更新
 
 **タスク**:
+
 ```bash
 # Agent 1: App Layout Update
 1. app/_layout.tsx 更新
@@ -568,11 +656,13 @@ npm install expo-auth-session expo-crypto
 ```
 
 ### 依存パッケージ
+
 ```bash
 npm install @react-native-async-storage/async-storage
 ```
 
 ### コミット戦略
+
 1. Tutorial service & hook
 2. Tutorial components
 3. Tutorial screen
@@ -583,14 +673,17 @@ npm install @react-native-async-storage/async-storage
 ## 🚀 Phase 9: 最適化・仕上げ
 
 ### 概要
-パフォーマンス最適化、エラーハンドリング、アクセシビリティ、E2Eテスト
+
+パフォーマンス最適化、エラーハンドリング、アクセシビリティ、E2E テスト
 
 ### 前提条件
+
 - ✅ 全機能完了
 
 ### タスク
 
 #### 1. パフォーマンス最適化
+
 ```bash
 # Agent 1: Performance
 1. 画像遅延読み込み（react-native-fast-image）
@@ -600,6 +693,7 @@ npm install @react-native-async-storage/async-storage
 ```
 
 #### 2. エラーハンドリング強化
+
 ```bash
 # Agent 2: Error Handling (並行可)
 1. エラーバウンダリ実装
@@ -609,6 +703,7 @@ npm install @react-native-async-storage/async-storage
 ```
 
 #### 3. アクセシビリティ対応
+
 ```bash
 # Agent 3: Accessibility (並行可)
 1. accessibilityLabel追加
@@ -617,7 +712,8 @@ npm install @react-native-async-storage/async-storage
 4. コントラスト比確認
 ```
 
-#### 4. E2Eテスト
+#### 4. E2E テスト
+
 ```bash
 # Agent 1: E2E Tests
 1. Detox設定
@@ -628,6 +724,7 @@ npm install @react-native-async-storage/async-storage
 ```
 
 ### 依存パッケージ
+
 ```bash
 npm install react-native-fast-image
 npm install @shopify/flash-list
@@ -635,6 +732,7 @@ npm install --save-dev detox
 ```
 
 ### コミット戦略
+
 1. Performance optimizations
 2. Error handling improvements
 3. Accessibility enhancements
@@ -644,7 +742,8 @@ npm install --save-dev detox
 
 ## 📊 並行実行戦略
 
-### 推奨パターン1: 2エージェント並行
+### 推奨パターン 1: 2 エージェント並行
+
 ```
 Agent A: Phase 2 (掲示板機能)
 Agent B: Phase 6 (ソーシャルログイン) ← 独立実行可
@@ -665,7 +764,8 @@ Agent A: Phase 9 パフォーマンス
 Agent B: Phase 9 エラーハンドリング
 ```
 
-### 推奨パターン2: 3エージェント並行
+### 推奨パターン 2: 3 エージェント並行
+
 ```
 Agent A: Phase 2 (掲示板) - Services & Hooks
 Agent B: Phase 2 (掲示板) - Components
@@ -691,7 +791,8 @@ Agent C: Phase 9 アクセシビリティ
 
 ## 🎯 各フェーズの開始コマンド例
 
-### Phase 2開始
+### Phase 2 開始
+
 ```
 Phase 2（掲示板機能）を実装してください。
 - TDDアプローチで進めること
@@ -701,6 +802,7 @@ Phase 2（掲示板機能）を実装してください。
 ```
 
 ### 並行実行開始
+
 ```
 # セッション1
 Phase 2のサービス層とフック（usePosts, usePost, useImagePicker）を実装してください。
@@ -716,10 +818,10 @@ Phase 6のソーシャルログイン機能を実装してください。
 
 ## 📝 注意事項
 
-1. **TDD厳守**: 各フェーズでテストを先に書く
-2. **MCP活用**: Serena（コード操作）、Context7（ドキュメント参照）を使う
+1. **TDD 厳守**: 各フェーズでテストを先に書く
+2. **MCP 活用**: Serena（コード操作）、Context7（ドキュメント参照）を使う
 3. **小さなコミット**: 機能単位で細かくコミット
-4. **テスト確認**: `npm test` で全テスト合格を確認してからpush
+4. **テスト確認**: `npm test` で全テスト合格を確認してから push
 5. **依存関係**: 各フェーズの「前提条件」を確認
 6. **並行作業**: 独立したフェーズは並行実行可能
 
@@ -727,6 +829,6 @@ Phase 6のソーシャルログイン機能を実装してください。
 
 ## 🔗 参考ドキュメント
 
-- [family.md](family.md) - 要件定義
+- [requirements.md](requirements.md) - 要件定義
 - [CLAUDE.md](CLAUDE.md) - プロジェクト概要
 - [implementation-plan.md](implementation-plan.md) - 詳細実装計画
