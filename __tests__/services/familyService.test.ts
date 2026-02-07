@@ -10,6 +10,7 @@ const mockWhere = jest.fn();
 const mockOrderBy = jest.fn();
 
 const mockDoc = jest.fn(() => ({
+  id: 'mock-id',
   get: mockGet,
   set: mockSet,
   update: mockUpdate,

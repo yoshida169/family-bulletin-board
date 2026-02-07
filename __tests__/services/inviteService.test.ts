@@ -1,4 +1,4 @@
-import { inviteService } from '@services/firebase/invite';
+import { invitationService as inviteService } from '@/src/services/firebase/invitation';
 
 // Mock Firestore
 const mockGet = jest.fn();
