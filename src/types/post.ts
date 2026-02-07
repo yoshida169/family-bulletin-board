@@ -1,23 +1,24 @@
 export interface Post {
   id: string;
-  title: string;
+  familyId: string;
   content: string;
-  imageURLs: string[];
+  imageUrls: string[];
   authorId: string;
   authorName: string;
   authorPhotoURL: string | null;
   isPinned: boolean;
-  isApproved: boolean;
   commentCount: number;
-  readCount: number;
+  readBy: string[];
   createdAt: Date;
   updatedAt: Date;
-  searchKeywords: string[];
 }
 
 export interface Comment {
   id: string;
+  postId: string;
+  familyId: string;
   content: string;
+  imageUrl: string | null;
   authorId: string;
   authorName: string;
   authorPhotoURL: string | null;
@@ -26,25 +27,28 @@ export interface Comment {
   updatedAt: Date;
 }
 
-export interface ReadRecord {
-  userId: string;
-  readAt: Date;
-}
-
 export interface CreatePostInput {
-  title: string;
+  familyId: string;
   content: string;
-  images?: string[];
+  imageUrls?: string[];
+  authorId: string;
+  authorName: string;
+  authorPhotoURL?: string | null;
 }
 
 export interface UpdatePostInput {
-  title?: string;
   content?: string;
-  imageURLs?: string[];
+  imageUrls?: string[];
   isPinned?: boolean;
 }
 
 export interface CreateCommentInput {
+  postId: string;
+  familyId: string;
   content: string;
-  parentCommentId?: string;
+  imageUrl?: string | null;
+  authorId: string;
+  authorName: string;
+  authorPhotoURL?: string | null;
+  parentCommentId?: string | null;
 }

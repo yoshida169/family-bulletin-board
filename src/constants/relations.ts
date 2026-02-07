@@ -1,4 +1,4 @@
-import { Relation } from '@types/family';
+import type { Relation } from '@/src/types/family';
 
 export const RELATIONS: { value: Relation; label: string; emoji: string }[] = [
   { value: 'お父さん', label: 'お父さん', emoji: '👨' },

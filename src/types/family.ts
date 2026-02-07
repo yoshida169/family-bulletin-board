@@ -42,6 +42,8 @@ export interface FamilyMember {
 }
 
 export interface InviteCode {
+  id: string;
+  familyId: string;
   code: string;
   createdBy: string;
   expiresAt: Date;
