@@ -1,4 +1,5 @@
-import '@testing-library/react-native/extend-expect';
+// Note: @testing-library/react-native/extend-expect may not be available in all versions
+// import '@testing-library/react-native/extend-expect';
 
 jest.mock('@react-native-firebase/app', () => ({
   __esModule: true,
@@ -31,4 +32,9 @@ jest.mock('@react-native-firebase/storage', () => ({
   default: () => ({
     ref: jest.fn(),
   }),
+}));
+
+jest.mock('expo-clipboard', () => ({
+  setStringAsync: jest.fn().mockResolvedValue(undefined),
+  getStringAsync: jest.fn().mockResolvedValue(''),
 }));
