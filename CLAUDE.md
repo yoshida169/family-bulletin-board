@@ -115,6 +115,10 @@ Emulator ports:
 - Storage: 9199
 - UI: 4000
 
+## MCP (Model Context Protocol)
+
+利用可能なMCPサーバーがある場合は積極的に活用すること。MCPを通じて外部ツールやサービスと連携し、開発効率を高める。
+
 ## Documentation Reference
 
 - [family.md](family.md) - Requirements definition (要件定義書)
