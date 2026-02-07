@@ -69,9 +69,28 @@ export const familySchema = z.object({
     .optional(),
 });
 
+export const createFamilySchema = z.object({
+  name: z
+    .string()
+    .min(1, 'ファミリー名を入力してください')
+    .max(50, 'ファミリー名は50文字以内で入力してください'),
+  description: z
+    .string()
+    .max(200, '説明は200文字以内で入力してください')
+    .optional(),
+  relation: z
+    .string()
+    .min(1, '続柄を選択してください'),
+});
+
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type SignUpFormData = z.infer<typeof signUpSchema>;
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 export type PostFormData = z.infer<typeof postSchema>;
 export type CommentFormData = z.infer<typeof commentSchema>;
 export type FamilyFormData = z.infer<typeof familySchema>;
+export type CreateFamilyFormData = z.infer<typeof createFamilySchema>;
+
+// Update family schema is the same as family schema
+export const updateFamilySchema = familySchema;
+export type UpdateFamilyFormData = z.infer<typeof updateFamilySchema>;
