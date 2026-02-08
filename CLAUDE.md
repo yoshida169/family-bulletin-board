@@ -126,6 +126,22 @@ Emulator ports:
 
 To connect to emulators, the app needs to detect and use localhost endpoints (configured in Firebase service initialization).
 
+## Security
+
+### Secret Detection Hook
+
+このプロジェクトでは、git commit前に秘匿情報を自動的にチェックする[Claude Code hook](.claude/hooks/README.md)が設定されています。
+
+**チェック対象：**
+- APIキー、シークレットキー、アクセストークン
+- Firebase設定（apiKey, messagingSenderId など）
+- パスワード、AWS認証情報、秘密鍵
+
+**動作：**
+秘匿情報が検出された場合、commitは自動的にブロックされます。環境変数や設定ファイルは`.env`ファイルなどに分離し、`.gitignore`に追加してください。
+
+**詳細：** `.claude/hooks/README.md`を参照
+
 ## MCP (Model Context Protocol)
 
 利用可能なMCPサーバーがある場合は積極的に活用すること。MCPを通じて外部ツールやサービスと連携し、開発効率を高める。
