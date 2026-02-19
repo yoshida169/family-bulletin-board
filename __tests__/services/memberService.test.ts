@@ -1,53 +1,111 @@
 import { memberService } from '@services/firebase/member';
+import firestore from '@react-native-firebase/firestore';
 
-// Mock Firestore
+// Create comprehensive mocks
+const mockBatchCommit = jest.fn().mockResolvedValue(undefined);
+const mockBatchSet = jest.fn();
+const mockBatchUpdate = jest.fn();
+const mockBatchDelete = jest.fn();
+
+const mockBatch = {
+  set: mockBatchSet,
+  update: mockBatchUpdate,
+  delete: mockBatchDelete,
+  commit: mockBatchCommit,
+};
+
 const mockGet = jest.fn();
 const mockSet = jest.fn();
 const mockUpdate = jest.fn();
 const mockDelete = jest.fn();
 
-const mockDoc = jest.fn(() => ({
+const createMockDocRef = (id: string = 'mock-doc-id') => ({
+  id,
   get: mockGet,
   set: mockSet,
   update: mockUpdate,
   delete: mockDelete,
-}));
+  collection: jest.fn(),
+});
 
-const mockCollection = jest.fn(() => ({
-  doc: mockDoc,
-  get: mockGet,
-}));
+const createMockCollectionRef = () => ({
+  doc: jest.fn(),
+  get: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+});
 
+const mockFirestoreInstance = {
+  collection: jest.fn(),
+  batch: jest.fn(() => mockBatch),
+};
+
+// Mock the firestore module
 jest.mock('@react-native-firebase/firestore', () => {
-  const serverTimestamp = jest.fn(() => 'SERVER_TIMESTAMP');
+  const mockFirestore = jest.fn(() => mockFirestoreInstance);
+
+  mockFirestore.FieldValue = {
+    serverTimestamp: jest.fn(() => new Date()),
+    increment: jest.fn((n) => n),
+    arrayUnion: jest.fn((val) => [val]),
+    arrayRemove: jest.fn((val) => []),
+  };
+
+  mockFirestore.Timestamp = {
+    now: jest.fn(() => ({ toDate: () => new Date() })),
+    fromDate: jest.fn((date) => ({ toDate: () => date })),
+  };
+
   return {
     __esModule: true,
-    default: jest.fn(() => ({
-      collection: mockCollection,
-      doc: mockDoc,
-      batch: jest.fn(() => ({
-        set: jest.fn(),
-        update: jest.fn(),
-        delete: jest.fn(),
-        commit: jest.fn().mockResolvedValue(undefined),
-      })),
-    })),
-    FieldValue: {
-      serverTimestamp,
-      increment: jest.fn((n) => ({ _increment: n })),
-    },
+    default: mockFirestore,
   };
 });
 
 describe('memberService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGet.mockReset();
+    mockSet.mockReset();
+    mockUpdate.mockReset();
+    mockDelete.mockReset();
+    mockBatchSet.mockReset();
+    mockBatchUpdate.mockReset();
+    mockBatchDelete.mockReset();
+    mockBatchCommit.mockReset().mockResolvedValue(undefined);
+    mockFirestoreInstance.collection.mockReset();
+    mockFirestoreInstance.batch.mockReset().mockReturnValue(mockBatch);
   });
 
   describe('addMember', () => {
     it('should add a new member to the family', async () => {
-      mockGet.mockResolvedValueOnce({ exists: false });
-      mockSet.mockResolvedValueOnce(undefined);
+      // Setup member doc
+      const memberDocRef = createMockDocRef('user-456');
+      mockGet.mockResolvedValueOnce({ exists: () => false }); // Member doesn't exist
+
+      // Setup members collection
+      const membersCollectionRef = createMockCollectionRef();
+      membersCollectionRef.doc.mockReturnValue(memberDocRef);
+
+      // Setup family doc
+      const familyDocRef = createMockDocRef('family-123');
+      familyDocRef.collection.mockReturnValue(membersCollectionRef);
+
+      // Setup families collection
+      const familiesCollectionRef = createMockCollectionRef();
+      familiesCollectionRef.doc.mockReturnValue(familyDocRef);
+
+      // Setup userFamilies doc
+      const userFamilyDocRef = createMockDocRef('user-456_family-123');
+
+      // Setup userFamilies collection
+      const userFamiliesCollectionRef = createMockCollectionRef();
+      userFamiliesCollectionRef.doc.mockReturnValue(userFamilyDocRef);
+
+      mockFirestoreInstance.collection
+        .mockReturnValueOnce(familiesCollectionRef)     // families collection
+        .mockReturnValueOnce(familiesCollectionRef)     // families collection for update
+        .mockReturnValueOnce(userFamiliesCollectionRef); // userFamilies collection
 
       const input = {
         familyId: 'family-123',
@@ -57,15 +115,35 @@ describe('memberService', () => {
         relation: 'お母さん' as const,
         role: 'member' as const,
         invitedBy: 'user-123',
+        familyName: 'テスト家族',
       };
 
       await memberService.addMember(input);
 
-      expect(mockSet).toHaveBeenCalled();
+      expect(mockGet).toHaveBeenCalled(); // Check existence
+      expect(mockBatchSet).toHaveBeenCalled(); // Add member and userFamily
+      expect(mockBatchUpdate).toHaveBeenCalled(); // Update family
+      expect(mockBatchCommit).toHaveBeenCalled();
     });
 
     it('should throw error if member already exists', async () => {
-      mockGet.mockResolvedValueOnce({ exists: true });
+      // Setup member doc that exists
+      const memberDocRef = createMockDocRef('user-456');
+      mockGet.mockResolvedValueOnce({ exists: () => true });
+
+      // Setup members collection
+      const membersCollectionRef = createMockCollectionRef();
+      membersCollectionRef.doc.mockReturnValue(memberDocRef);
+
+      // Setup family doc
+      const familyDocRef = createMockDocRef('family-123');
+      familyDocRef.collection.mockReturnValue(membersCollectionRef);
+
+      // Setup families collection
+      const familiesCollectionRef = createMockCollectionRef();
+      familiesCollectionRef.doc.mockReturnValue(familyDocRef);
+
+      mockFirestoreInstance.collection.mockReturnValue(familiesCollectionRef);
 
       const input = {
         familyId: 'family-123',
@@ -85,21 +163,74 @@ describe('memberService', () => {
 
   describe('removeMember', () => {
     it('should remove a member from the family', async () => {
-      mockDelete.mockResolvedValueOnce(undefined);
+      // Setup member doc
+      const memberDocRef = createMockDocRef('user-456');
+
+      // Setup members collection
+      const membersCollectionRef = createMockCollectionRef();
+      membersCollectionRef.doc.mockReturnValue(memberDocRef);
+
+      // Setup family doc
+      const familyDocRef = createMockDocRef('family-123');
+      familyDocRef.collection.mockReturnValue(membersCollectionRef);
+
+      // Setup families collection
+      const familiesCollectionRef = createMockCollectionRef();
+      familiesCollectionRef.doc.mockReturnValue(familyDocRef);
+
+      // Setup userFamilies doc
+      const userFamilyDocRef = createMockDocRef('user-456_family-123');
+
+      // Setup userFamilies collection
+      const userFamiliesCollectionRef = createMockCollectionRef();
+      userFamiliesCollectionRef.doc.mockReturnValue(userFamilyDocRef);
+
+      mockFirestoreInstance.collection
+        .mockReturnValueOnce(familiesCollectionRef)     // families collection
+        .mockReturnValueOnce(familiesCollectionRef)     // families collection for update
+        .mockReturnValueOnce(userFamiliesCollectionRef); // userFamilies collection
 
       await memberService.removeMember('family-123', 'user-456');
 
-      expect(mockDelete).toHaveBeenCalled();
+      expect(mockBatchDelete).toHaveBeenCalledTimes(2); // member and userFamily
+      expect(mockBatchUpdate).toHaveBeenCalled(); // Update family
+      expect(mockBatchCommit).toHaveBeenCalled();
     });
   });
 
   describe('updateMemberRole', () => {
-    it('should update member role', async () => {
-      mockUpdate.mockResolvedValueOnce(undefined);
+    it('should update member role to admin', async () => {
+      // Setup member doc
+      const memberDocRef = createMockDocRef('user-456');
+
+      // Setup members collection
+      const membersCollectionRef = createMockCollectionRef();
+      membersCollectionRef.doc.mockReturnValue(memberDocRef);
+
+      // Setup family doc
+      const familyDocRef = createMockDocRef('family-123');
+      familyDocRef.collection.mockReturnValue(membersCollectionRef);
+
+      // Setup families collection
+      const familiesCollectionRef = createMockCollectionRef();
+      familiesCollectionRef.doc.mockReturnValue(familyDocRef);
+
+      // Setup userFamilies doc
+      const userFamilyDocRef = createMockDocRef('user-456_family-123');
+
+      // Setup userFamilies collection
+      const userFamiliesCollectionRef = createMockCollectionRef();
+      userFamiliesCollectionRef.doc.mockReturnValue(userFamilyDocRef);
+
+      mockFirestoreInstance.collection
+        .mockReturnValueOnce(familiesCollectionRef)     // families collection
+        .mockReturnValueOnce(familiesCollectionRef)     // families collection for adminIds update
+        .mockReturnValueOnce(userFamiliesCollectionRef); // userFamilies collection
 
       await memberService.updateMemberRole('family-123', 'user-456', 'admin');
 
-      expect(mockUpdate).toHaveBeenCalled();
+      expect(mockBatchUpdate).toHaveBeenCalled();
+      expect(mockBatchCommit).toHaveBeenCalled();
     });
   });
 
@@ -132,7 +263,19 @@ describe('memberService', () => {
         },
       ];
 
-      mockGet.mockResolvedValueOnce({ docs: mockDocs });
+      // Setup members collection
+      const membersCollectionRef = createMockCollectionRef();
+      membersCollectionRef.get.mockResolvedValue({ docs: mockDocs });
+
+      // Setup family doc
+      const familyDocRef = createMockDocRef('family-123');
+      familyDocRef.collection.mockReturnValue(membersCollectionRef);
+
+      // Setup families collection
+      const familiesCollectionRef = createMockCollectionRef();
+      familiesCollectionRef.doc.mockReturnValue(familyDocRef);
+
+      mockFirestoreInstance.collection.mockReturnValue(familiesCollectionRef);
 
       const result = await memberService.getFamilyMembers('family-123');
 
@@ -154,10 +297,26 @@ describe('memberService', () => {
         invitedBy: null,
       };
 
+      // Setup member doc
+      const memberDocRef = createMockDocRef('user-123');
       mockGet.mockResolvedValueOnce({
-        exists: true,
+        exists: () => true,
         data: () => mockMemberData,
       });
+
+      // Setup members collection
+      const membersCollectionRef = createMockCollectionRef();
+      membersCollectionRef.doc.mockReturnValue(memberDocRef);
+
+      // Setup family doc
+      const familyDocRef = createMockDocRef('family-123');
+      familyDocRef.collection.mockReturnValue(membersCollectionRef);
+
+      // Setup families collection
+      const familiesCollectionRef = createMockCollectionRef();
+      familiesCollectionRef.doc.mockReturnValue(familyDocRef);
+
+      mockFirestoreInstance.collection.mockReturnValue(familiesCollectionRef);
 
       const result = await memberService.getMember('family-123', 'user-123');
 
@@ -166,7 +325,23 @@ describe('memberService', () => {
     });
 
     it('should return null if member does not exist', async () => {
-      mockGet.mockResolvedValueOnce({ exists: false });
+      // Setup member doc
+      const memberDocRef = createMockDocRef('nonexistent');
+      mockGet.mockResolvedValueOnce({ exists: () => false });
+
+      // Setup members collection
+      const membersCollectionRef = createMockCollectionRef();
+      membersCollectionRef.doc.mockReturnValue(memberDocRef);
+
+      // Setup family doc
+      const familyDocRef = createMockDocRef('family-123');
+      familyDocRef.collection.mockReturnValue(membersCollectionRef);
+
+      // Setup families collection
+      const familiesCollectionRef = createMockCollectionRef();
+      familiesCollectionRef.doc.mockReturnValue(familyDocRef);
+
+      mockFirestoreInstance.collection.mockReturnValue(familiesCollectionRef);
 
       const result = await memberService.getMember('family-123', 'nonexistent');
 
