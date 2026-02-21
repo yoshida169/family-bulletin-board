@@ -6,6 +6,8 @@ import {
   ScrollView,
   useColorScheme,
   Alert,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -221,7 +223,7 @@ export default function EditFamilyScreen() {
               variant="outline"
               loading={isDeleting}
               disabled={isDeleting || isLoading}
-              style={[styles.deleteButton, { borderColor: colors.error }]}
+              style={[styles.deleteButton, { borderColor: colors.error }] as StyleProp<ViewStyle>}
               textStyle={{ color: colors.error }}
               testID="delete-family-button"
             />

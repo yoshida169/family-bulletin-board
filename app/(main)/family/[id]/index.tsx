@@ -81,8 +81,8 @@ export default function FamilyDetailScreen() {
         <View style={[styles.header, { backgroundColor: colors.surface }]}>
           <Avatar
             name={currentFamily.name}
-            imageUrl={currentFamily.iconURL}
-            size={80}
+            source={currentFamily.iconURL}
+            size="xl"
           />
           <Text style={[styles.familyName, { color: colors.text }]}>
             {currentFamily.name}
