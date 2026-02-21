@@ -120,32 +120,6 @@ export default function FamilyScreen() {
     </SafeAreaView>
   );
 }
-          style={styles.button}
-        />
-        <Button
-          title="招待コードで参加"
-          onPress={() => router.push('/family/join')}
-          variant="outline"
-          style={styles.button}
-        />
-      </View>
-    </View>
-  );
-
-  return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: colors.background }]}
-      edges={['left', 'right']}
-    >
-      <FlatList
-        data={[]}
-        renderItem={() => null}
-        ListEmptyComponent={renderEmptyState}
-        contentContainerStyle={styles.listContent}
-      />
-    </SafeAreaView>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {

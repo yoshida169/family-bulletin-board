@@ -17,6 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Button, Input } from '@/src/components/ui';
+import { GoogleSignInButton } from '@/src/components/auth/GoogleSignInButton';
 import { useAuth } from '@/src/hooks/useAuth';
 import { signUpSchema, SignUpFormData } from '@/src/utils/validation';
 import { Colors } from '@/src/constants/colors';
@@ -26,7 +27,7 @@ export default function SignUpScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
   const router = useRouter();
-  const { signUp, isLoading, error, clearError } = useAuth();
+  const { signUp, signInWithGoogle, isLoading, error, clearError } = useAuth();
 
   const {
     control,
@@ -52,6 +53,15 @@ export default function SignUpScreen() {
       });
     } catch {
       Alert.alert('登録エラー', error || '登録に失敗しました');
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      clearError();
+      await signInWithGoogle();
+    } catch {
+      Alert.alert('登録エラー', error || 'Googleログインに失敗しました');
     }
   };
 
@@ -167,6 +177,19 @@ export default function SignUpScreen() {
               style={styles.submitButton}
               testID="signup-button"
             />
+
+            <View style={styles.divider}>
+              <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
+              <Text style={[styles.dividerText, { color: colors.textSecondary }]}>
+                または
+              </Text>
+              <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
+            </View>
+
+            <GoogleSignInButton
+              onPress={handleGoogleSignIn}
+              loading={isLoading}
+            />
           </View>
 
           <View style={styles.footer}>
@@ -220,6 +243,19 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginTop: Layout.spacing.md,
+  },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: Layout.spacing.lg,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+  },
+  dividerText: {
+    fontSize: Layout.fontSize.sm,
+    marginHorizontal: Layout.spacing.md,
   },
   footer: {
     flexDirection: 'row',

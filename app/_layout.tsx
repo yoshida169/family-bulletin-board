@@ -9,6 +9,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useAuth } from '@/src/hooks/useAuth';
 import { Loading } from '@/src/components/ui/Loading';
+import { NotificationHandler } from '@/src/components/notifications/NotificationHandler';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -67,6 +68,7 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <NotificationHandler />
       <Slot />
     </ThemeProvider>
   );
