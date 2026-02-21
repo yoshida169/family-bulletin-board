@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Avatar, Card } from '@/src/components/ui';
@@ -54,6 +55,7 @@ function SettingsItem({ icon, label, onPress, danger }: SettingsItemProps) {
 }
 
 export default function SettingsScreen() {
+  const router = useRouter();
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
   const { user, signOut } = useAuth();
@@ -110,12 +112,17 @@ export default function SettingsScreen() {
           <SettingsItem
             icon="person-outline"
             label="プロフィール編集"
-            onPress={() => {}}
+            onPress={() => router.push('/(main)/settings/profile')}
           />
           <SettingsItem
             icon="notifications-outline"
             label="通知設定"
             onPress={() => {}}
+          />
+          <SettingsItem
+            icon="shield-checkmark-outline"
+            label="アカウント"
+            onPress={() => router.push('/(main)/settings/account')}
           />
         </View>
 

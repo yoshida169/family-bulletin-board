@@ -8,6 +8,8 @@ import {
   RefreshControl,
   TouchableOpacity,
   ActivityIndicator,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -43,10 +45,10 @@ export default function HomeScreen() {
 
   // Load user families on mount
   useEffect(() => {
-    if (user?.id) {
-      loadUserFamilies(user.id);
+    if (user?.uid) {
+      loadUserFamilies(user.uid);
     }
-  }, [user?.id, loadUserFamilies]);
+  }, [user?.uid, loadUserFamilies]);
 
   // Set first family as current when families are loaded
   useEffect(() => {
@@ -67,23 +69,23 @@ export default function HomeScreen() {
 
   const handlePostPress = useCallback(
     (post: Post) => {
-      if (user?.id && !post.readBy.includes(user.id)) {
-        markPostAsRead(post.id, user.id);
+      if (user?.uid && !post.readBy.includes(user.uid)) {
+        markPostAsRead(post.id, user.uid);
       }
       router.push(`/post/${post.id}`);
     },
-    [user?.id, router, markPostAsRead]
+    [user?.uid, router, markPostAsRead]
   );
 
   const renderPost = ({ item }: { item: Post }) => {
-    const isUnread = user?.id ? !item.readBy.includes(user.id) : false;
+    const isUnread = user?.uid ? !item.readBy.includes(user.uid) : false;
 
     return (
       <TouchableOpacity
         onPress={() => handlePostPress(item)}
         activeOpacity={0.7}
       >
-        <Card style={[styles.postCard, isUnread && styles.unreadCard]}>
+        <Card style={(isUnread ? [styles.postCard, styles.unreadCard] : styles.postCard) as StyleProp<ViewStyle>}>
           <View style={styles.postHeader}>
             <View style={styles.authorInfo}>
               <View
