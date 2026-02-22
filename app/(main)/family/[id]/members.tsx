@@ -68,7 +68,6 @@ export default function FamilyMembersScreen() {
 
       <MemberList
         members={members}
-        onRefresh={handleRefresh}
         testID="member-list"
       />
 

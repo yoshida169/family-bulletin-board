@@ -11,24 +11,27 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, Stack } from 'expo-router';
+import { useRouter, Stack, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Button } from '@/src/components/ui';
 import { Colors } from '@/src/constants/colors';
 import { Layout } from '@/src/constants/layout';
 import { useAuthStore } from '@/src/store/authStore';
-import { useFamilyStore } from '@/src/store/familyStore';
+import { postService } from '@/src/services/firebase/post';
 
 const MAX_CONTENT_LENGTH = 1000;
 
 export default function CreatePostScreen() {
   const router = useRouter();
+  const { familyId, boardId } = useLocalSearchParams<{
+    familyId: string;
+    boardId: string;
+  }>();
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
 
   const { user } = useAuthStore();
-  const { currentFamily, createPost } = useFamilyStore();
 
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,21 +47,24 @@ export default function CreatePostScreen() {
       return;
     }
 
-    if (!currentFamily) {
-      Alert.alert('エラー', 'ファミリーが選択されていません');
+    if (!familyId || !boardId) {
+      Alert.alert('エラー', 'ファミリーまたは掲示板が選択されていません');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await createPost(
-        content.trim(),
-        user.id,
-        user.displayName,
-        user.photoURL
-      );
+      await postService.createPost({
+        familyId,
+        boardId,
+        content: content.trim(),
+        authorId: user.uid,
+        authorName: user.displayName ?? '名無し',
+        authorPhotoURL: user.photoURL,
+      });
       router.back();
     } catch (error) {
+      console.error('Failed to create post:', error);
       Alert.alert('エラー', '投稿に失敗しました。もう一度お試しください');
     } finally {
       setIsSubmitting(false);
@@ -75,11 +81,11 @@ export default function CreatePostScreen() {
           title: '新しい投稿',
           headerRight: () => (
             <Button
-              title="投稿"
+              label="投稿"
               onPress={handleSubmit}
               disabled={!content.trim() || isOverLimit || isSubmitting}
               loading={isSubmitting}
-              size="small"
+              size="sm"
             />
           ),
         }}
@@ -98,14 +104,6 @@ export default function CreatePostScreen() {
             contentContainerStyle={styles.scrollContent}
             keyboardShouldPersistTaps="handled"
           >
-            {/* Family indicator */}
-            <View style={[styles.familyInfo, { backgroundColor: colors.surface }]}>
-              <Ionicons name="people" size={16} color={colors.primary} />
-              <Text style={[styles.familyName, { color: colors.text }]}>
-                {currentFamily?.name ?? 'ファミリー未選択'}
-              </Text>
-            </View>
-
             {/* Content input */}
             <View style={styles.inputContainer}>
               <TextInput
@@ -114,7 +112,7 @@ export default function CreatePostScreen() {
                   { color: colors.text, borderColor: colors.border },
                 ]}
                 placeholder="今日の出来事や家族へのメッセージを書いてみましょう..."
-                placeholderTextColor={colors.textLight}
+                placeholderTextColor={colors.textSecondary}
                 value={content}
                 onChangeText={setContent}
                 multiline
@@ -129,7 +127,7 @@ export default function CreatePostScreen() {
               <Text
                 style={[
                   styles.charCount,
-                  { color: isOverLimit ? colors.error : colors.textLight },
+                  { color: isOverLimit ? colors.error : colors.textSecondary },
                 ]}
               >
                 {remainingChars}
@@ -174,42 +172,30 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: Layout.spacing.md,
   },
-  familyInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: Layout.spacing.sm,
-    borderRadius: Layout.borderRadius.sm,
-    marginBottom: Layout.spacing.md,
-    gap: Layout.spacing.xs,
-  },
-  familyName: {
-    fontSize: Layout.fontSize.sm,
-    fontWeight: '500',
-  },
   inputContainer: {
     marginBottom: Layout.spacing.sm,
   },
   textInput: {
     minHeight: 200,
-    fontSize: Layout.fontSize.md,
+    fontSize: 16,
     lineHeight: 24,
     padding: Layout.spacing.md,
     borderWidth: 1,
-    borderRadius: Layout.borderRadius.md,
+    borderRadius: 12,
   },
   charCountContainer: {
     alignItems: 'flex-end',
     marginBottom: Layout.spacing.lg,
   },
   charCount: {
-    fontSize: Layout.fontSize.sm,
+    fontSize: 14,
   },
   tipsContainer: {
     padding: Layout.spacing.md,
-    borderRadius: Layout.borderRadius.md,
+    borderRadius: 12,
   },
   tipsTitle: {
-    fontSize: Layout.fontSize.md,
+    fontSize: 16,
     fontWeight: '600',
     marginBottom: Layout.spacing.sm,
   },
@@ -220,7 +206,7 @@ const styles = StyleSheet.create({
     marginBottom: Layout.spacing.xs,
   },
   tipText: {
-    fontSize: Layout.fontSize.sm,
+    fontSize: 14,
     flex: 1,
   },
 });
