@@ -39,13 +39,13 @@ export const JoinFamilyModal: React.FC<JoinFamilyModalProps> = ({
 
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (!visible) {
       // Reset form when modal closes
       setCode('');
-      setError(null);
+      setError(undefined);
     }
   }, [visible]);
 
@@ -53,7 +53,7 @@ export const JoinFamilyModal: React.FC<JoinFamilyModalProps> = ({
     // Convert to uppercase and limit to 6 characters
     const upperCase = text.toUpperCase().slice(0, 6);
     setCode(upperCase);
-    setError(null);
+    setError(undefined);
   };
 
   const handleJoin = async () => {
@@ -64,7 +64,7 @@ export const JoinFamilyModal: React.FC<JoinFamilyModalProps> = ({
     }
 
     setLoading(true);
-    setError(null);
+    setError(undefined);
 
     try {
       const result = await invitationService.useInviteCode(

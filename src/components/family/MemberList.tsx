@@ -63,8 +63,8 @@ export const MemberList: React.FC<MemberListProps> = ({
       <View style={styles.memberContainer}>
         <Avatar
           name={item.displayName}
-          imageUrl={item.photoURL}
-          size={48}
+          source={item.photoURL}
+          size="md"
         />
         <View style={styles.memberContent}>
           <View style={styles.memberHeader}>

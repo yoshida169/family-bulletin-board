@@ -29,8 +29,8 @@ export const FamilyCard: React.FC<FamilyCardProps> = ({
       <View style={styles.container}>
         <Avatar
           name={family.familyName}
-          imageUrl={family.familyIconURL}
-          size={48}
+          source={family.familyIconURL}
+          size="md"
         />
         <View style={styles.content}>
           <View style={styles.header}>
