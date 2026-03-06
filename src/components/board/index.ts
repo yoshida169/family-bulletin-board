@@ -1,3 +1,4 @@
-export * from './BoardCard';
-export * from './BoardList';
-export * from './CreateBoardModal';
+export * from "./BoardCard";
+export * from "./BoardList";
+export * from "./CreateBoardModal";
+
