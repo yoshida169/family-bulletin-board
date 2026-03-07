@@ -30,10 +30,10 @@ export const RelationPicker: React.FC<RelationPickerProps> = ({
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
   const [customRelation, setCustomRelation] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const handleSelectRelation = (relation: Relation) => {
-    setError(null);
+    setError(undefined);
     onSelect(relation);
   };
 
@@ -42,7 +42,7 @@ export const RelationPicker: React.FC<RelationPickerProps> = ({
       setError('続柄を入力してください');
       return;
     }
-    setError(null);
+    setError(undefined);
     onSelect(customRelation.trim() as Relation);
     setCustomRelation('');
   };
@@ -90,7 +90,7 @@ export const RelationPicker: React.FC<RelationPickerProps> = ({
             value={customRelation}
             onChangeText={(text) => {
               setCustomRelation(text);
-              setError(null);
+              setError(undefined);
             }}
             error={error}
             style={styles.customInput}
